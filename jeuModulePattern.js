@@ -80,8 +80,7 @@ let jeuModulePattern = (function () {
       if (caseCliquee == caseCherche) {
         evt.target.classList = "ok";
         evt.target.innerHTML = "0";
-        window.alert("Boom, tu es mort, bravo !");
-        return;
+        window.alert("Boom, tu es mort, bravo ! Ça t'a prit " + compteurEssaies + " essai(s)" + " avant d'exploser !");
       } else {
         evt.target.classList = "ko";
 
