@@ -71,7 +71,7 @@ class Jeu {
     console.log("coordonnée de la case à trouver : " + this.caseCherche);
   }
 
-  // Gestion de l'action des coups joués par le joueur
+  // Gestion des coups joués par le joueur
   jouer(evt) {
     caseCliquee = evt.target.dataset.c + "," + evt.target.dataset.l;
     console.log(caseCliquee);
@@ -100,5 +100,4 @@ class Jeu {
       document.getElementById("nbCoups").innerHTML = compteurEssaies;
     }
   }
-
 }
