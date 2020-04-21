@@ -22,9 +22,7 @@
 	<script>
 		
 		window.addEventListener("load", function(){
-			
-			jeuModulePattern.initialiserPage();
-				
+			new Jeu;
 		});
 
 	</script>
@@ -40,15 +38,7 @@
 		<h2>Trouvez la cible</h2>
 		<p>Nombre de coups joués : <span id="nbCoups"></span></p>
 		<table id="grille">
-<!--
-			exemple de structure de grille à générer dans le module pattern,
-			chaque ligne tr a un dataset "l" qui contient le numéro de ligne,
-			chaque cellule td a un dataset "c" qui contient le numéro de colonne:
 
-			<tr data-l=1><td data-c=1></td><td data-c=2></td><td data-c=3></td></tr>
-			<tr data-l=2><td data-c=1></td><td data-c=2></td><td data-c=3></td></tr>
-			<tr data-l=3><td data-c=1></td><td data-c=2></td><td data-c=3></td></tr>
--->
 		</table>
 	</section>
 </body>

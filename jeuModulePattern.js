@@ -8,7 +8,6 @@ let jeuModulePattern = (function () {
   let lignes = [];
   let colonnes = [];
   let caseCherche;
-  let succes = false;
 
   let oCibleDansGrille = {
     // fonction au chargement de la page
@@ -25,7 +24,7 @@ let jeuModulePattern = (function () {
 
       compteurEssaies = "";
       document.getElementById("nbCoups").innerHTML = compteurEssaies;
-      
+
       // initialiser le jeu lorsque l'utilisateur clique sur le bouton Nouveau Jeu
       eNouveauJeu.addEventListener("click", this.initialiserJeu);
     },
@@ -41,23 +40,29 @@ let jeuModulePattern = (function () {
 
       // Réinitialise la grille à chaque fois
       let eGrille = document.getElementById("grille");
-      eGrille.innerHTML = ""; 
+      eGrille.innerHTML = "";
 
-      for (let i = 0; i < nbLignes; i++) {
-        eTr = document.createElement("tr");
+      eGrille.addEventListener("contextmenu", function (evt) {
+        evt.preventDefault();
+      });
 
-        lignes[i] = eGrille.appendChild(eTr);
-        for (let j = 0; j < nbColonnes; j++) {
-          eTd = document.createElement("td");
+      if (nbLignes >= 2 && nbColonnes >= 2) {
+        for (let i = 0; i < nbLignes; i++) {
+          eTr = document.createElement("tr");
 
-          colonnes[j] = eTr.appendChild(eTd);
+          lignes[i] = eGrille.appendChild(eTr);
+          for (let j = 0; j < nbColonnes; j++) {
+            eTd = document.createElement("td");
 
-          colonnes[j].setAttribute("data-c", [j + 1]);
-          colonnes[j].setAttribute("data-l", [i + 1]);
+            colonnes[j] = eTr.appendChild(eTd);
 
-          colonnes[j].addEventListener("click", function (evt) {
-            oCibleDansGrille.jouer(evt);
-          });
+            colonnes[j].setAttribute("data-c", [j + 1]);
+            colonnes[j].setAttribute("data-l", [i + 1]);
+
+            colonnes[j].addEventListener("click", function (evt) {
+              oCibleDansGrille.jouer(evt);
+            });
+          }
         }
       }
 
@@ -71,7 +76,6 @@ let jeuModulePattern = (function () {
       caseCherche = randomX + 1 + "," + (randomY + 1);
 
       console.log("coordonnée de la case à trouver : " + caseCherche);
-
     },
 
     // fonction de traitement d'un clic sur une case
@@ -83,7 +87,6 @@ let jeuModulePattern = (function () {
       if (caseCliquee == caseCherche) {
         evt.target.classList = "ok";
         evt.target.innerHTML = "0";
-        succes = true;
         window.alert(
           "Boom, tu es mort, bravo ! Ça t'a prit " +
             compteurEssaies +
@@ -95,14 +98,12 @@ let jeuModulePattern = (function () {
         evt.target.classList = "ko";
         compteurEssaies++;
 
-        let distanceX = evt.target.dataset.c - randomX;
-        let distanceY = evt.target.dataset.l - randomY;
+        cliqueX = evt.target.dataset.c;
+        cliqueY = evt.target.dataset.l;
 
-        if (distanceX < distanceY && distanceX !== 0) {
-          evt.target.innerHTML = Math.abs(distanceX);
-        } else if (distanceX < distanceY && distanceX !== 0) {
-          evt.target.innerHTML = Math.abs(distanceY);
-        }
+        evt.target.innerHTML = Math.abs(
+          Math.floor(Math.hypot(randomX - cliqueX, randomY - cliqueY))
+        );
 
         document.getElementById("nbCoups").innerHTML = compteurEssaies;
       }
