@@ -37,6 +37,7 @@ let jeuModulePattern = (function () {
       let nbColonnes = document.getElementById("nbColonnes").value;
 
       let eGrille = document.getElementById("grille");
+      eGrille.innerHTML = ""; // Réinitialise la grille à chaque fois
 
       for (let i = 0; i < nbLignes; i++) {
         eTr = document.createElement("tr");
@@ -45,11 +46,13 @@ let jeuModulePattern = (function () {
         for (let j = 0; j < nbColonnes; j++) {
           eTd = document.createElement("td");
 
-          eTr.appendChild(eTd).setAttribute("data-c", [j]);
-          eTr.appendChild(eTd).setAttribute("data-l", [i]);
+          eTr.appendChild(eTd).setAttribute("data-c", [j + 1]);
+          eTr.appendChild(eTd).setAttribute("data-l", [i + 1]);
 
+          // ajouter le gestionnaire d'évènement pour gérer les clics sur les cases de la grille
           eTd.addEventListener("click", function (evt) {
             oCibleDansGrille.jouer(evt);
+            return;
           });
         }
       }
@@ -57,31 +60,41 @@ let jeuModulePattern = (function () {
       console.log("Nombre de lignes = " + nbLignes);
       console.log("Nombre de colonnes = " + nbColonnes);
 
-      // - générer de manière aléatoire, la case cible à découvrir dans cette grille
+      // générer de manière aléatoire, la case cible à découvrir dans cette grille
       randomY = Math.floor(Math.random() * nbLignes);
       randomX = Math.floor(Math.random() * nbColonnes);
 
-      caseCherche = randomX + "," + randomY;
+      caseCherche = randomX + 1 + "," + (randomY + 1);
 
       console.log("coordonnée de la case à trouver : " + caseCherche);
-
-      // - ajouter le gestionnaire d'évènement pour gérer les clics sur les cases de la grille
     },
 
     // fonction de traitement d'un clic sur une case
-    // =============================================
 
     jouer: function (evt) {
       caseCliquee = evt.target.dataset.c + "," + evt.target.dataset.l;
       console.log(caseCliquee);
 
-      compteurEssaies++;
       document.getElementById("nbCoups").innerHTML = compteurEssaies;
 
       if (caseCliquee == caseCherche) {
-        evt.classList = "ok";
+        evt.target.classList = "ok";
+        evt.target.innerHTML = "0";
+        window.alert("Boom, tu es mort, bravo !");
+        return;
       } else {
-        evt.classList = "ko";
+        evt.target.classList = "ko";
+
+        let distanceX = evt.target.dataset.c - randomX;
+        let distanceY = evt.target.dataset.l - randomY;
+
+        if (distanceX < distanceY && distanceX !== 0) {
+          evt.target.innerHTML = Math.abs(distanceX);
+        } else if (distanceX < distanceY && distanceX !== 0) {
+          evt.target.innerHTML = Math.abs(distanceY);
+        }
+
+        compteurEssaies++;
       }
       // gestion d'un clic sur une case (filtrer les noeuds TD non déjà cliqués), à compléter :
       // - incrémenter le nombre de coups joués
